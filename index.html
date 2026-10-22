@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
-  <title>AetherCast 2026 | Eye-Soothing Global Country & Weather Intelligence</title>
+  <title>BreezeAtlas 2026 | Eye-Soothing Global Country & Weather Intelligence</title>
   <meta name="description" content="2026 Next-Gen Production Weather App with 200+ Country Intelligence, Live Wind/Rain Radar Map, World Time, Interactive Forecast Calendar, Air Quality, and Eye-Soothing Design." />
   <meta name="theme-color" content="#0f172a" />
 
@@ -276,7 +276,7 @@
           </div>
           <div class="min-w-0">
             <div class="flex items-center gap-2">
-              <h1 class="text-lg sm:text-xl font-extrabold tracking-tight truncate">AetherCast <span class="accent-gradient-text">2026</span></h1>
+              <h1 class="text-lg sm:text-xl font-extrabold tracking-tight truncate">BreezeAtlas <span class="accent-gradient-text">2026</span></h1>
               <span class="text-[10px] font-mono uppercase tracking-widest px-2 py-0.5 rounded-full border border-teal-500/30 bg-teal-500/10 accent-text shrink-0">Global v2.5</span>
             </div>
             <p class="text-[11px] sm:text-xs truncate" style="color: var(--text-muted);" data-i18n="tagline">Biophilic Global Country & Weather Intelligence</p>
@@ -826,7 +826,7 @@
     <footer class="mt-8 sm:mt-10 pt-5 border-t flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-center sm:text-left" style="color: var(--text-muted); border-color: var(--border-glass);">
       <div class="flex items-center gap-2">
         <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping shrink-0"></span>
-        <span>AetherCast 2026 • Powered by Free Open-Meteo Forecast, Air Quality & Built-In 200+ Country Intelligence</span>
+        <span>BreezeAtlas 2026 • Powered by Free Open-Meteo Forecast, Air Quality & Built-In 200+ Country Intelligence</span>
       </div>
       <div>
         <span>All-Device Responsive • Eye-Soothing Biophilic Glassmorphism</span>
@@ -1307,7 +1307,7 @@
       calendarYear: new Date().getFullYear(),
       calendarMonth: new Date().getMonth(),
       selectedDateStr: formatDateISO(new Date()),
-      notes: JSON.parse(localStorage.getItem('aethercast_notes_2026') || '{}'),
+      notes: JSON.parse(localStorage.getItem('breezeatlas_notes_2026') || '{}'),
       zenAudioActive: false,
       audioCtx: null,
       audioNodes: []
@@ -2343,7 +2343,7 @@
       } else {
         delete state.notes[state.selectedDateStr];
       }
-      localStorage.setItem('aethercast_notes_2026', JSON.stringify(state.notes));
+      localStorage.setItem('breezeatlas_notes_2026', JSON.stringify(state.notes));
       renderCalendar();
     });
 
@@ -2364,7 +2364,7 @@
 
     window.deleteCalNote = function(d) {
       delete state.notes[d];
-      localStorage.setItem('aethercast_notes_2026', JSON.stringify(state.notes));
+      localStorage.setItem('breezeatlas_notes_2026', JSON.stringify(state.notes));
       renderCalendar();
     };
 
@@ -2491,7 +2491,7 @@
       window.speechSynthesis.cancel();
       const cur = state.weather.current;
       const info = getWeatherInfo(cur.weather_code, cur.is_day);
-      const text = `AetherCast 2026 live weather briefing for ${state.location.name}, ${state.countryProfile.officialName}. Current sky is ${info.label} with a temperature of ${formatTemp(cur.temperature_2m)} degrees ${state.unit === 'C' ? 'Celsius' : 'Fahrenheit'}. Humidity is ${cur.relative_humidity_2m} percent and wind speed is ${formatSpeed(cur.wind_speed_10m)}. Have a peaceful day.`;
+      const text = `BreezeAtlas 2026 live weather briefing for ${state.location.name}, ${state.countryProfile.officialName}. Current sky is ${info.label} with a temperature of ${formatTemp(cur.temperature_2m)} degrees ${state.unit === 'C' ? 'Celsius' : 'Fahrenheit'}. Humidity is ${cur.relative_humidity_2m} percent and wind speed is ${formatSpeed(cur.wind_speed_10m)}. Have a peaceful day.`;
       const utter = new SpeechSynthesisUtterance(text);
       utter.rate = 0.96;
       window.speechSynthesis.speak(utter);

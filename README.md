@@ -1,6 +1,6 @@
-# 🌿 AetherCast 2026 — Global Country & Weather Intelligence App
+# 🌿 BreezeAtlas 2026 — Global Country & Weather Intelligence App
 
-**AetherCast 2026** is a production-ready, zero-API-key, single-file HTML5 Weather & Global Country Intelligence web application built with **Eye-Soothing Biophilic Glassmorphism**, **Live World Clock & Timezone Synchronization**, and an **Interactive 2026 Forecast & Planner Calendar**.
+**BreezeAtlas 2026** is a production-ready, zero-API-key, single-file HTML5 Weather & Global Country Intelligence web application built with **Eye-Soothing Biophilic Glassmorphism**, **Live World Clock & Timezone Synchronization**, and an **Interactive 2026 Forecast & Planner Calendar**.
 
 ---
 
@@ -37,7 +37,7 @@
 cd weather-app
 git init
 git add index.html README.md
-git commit -m "feat: launch AetherCast 2026 production weather & country app"
+git commit -m "feat: launch BreezeAtlas 2026 production weather & country app"
 git branch -M main
 git remote add origin https://github.com/Ambikasabhlock/weather-app-2026.git
 git push -u origin main
