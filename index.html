@@ -311,10 +311,11 @@
   <!-- Main Responsive Container -->
   <div class="relative z-10 max-w-[1620px] mx-auto px-3 sm:px-5 lg:px-8 py-3 sm:py-5">
 
-    <!-- TOP NAVIGATION BAR -->
-    <header class="glass-card rounded-2xl sm:rounded-3xl px-3.5 sm:px-5 py-3 sm:py-3.5 mb-4 flex flex-col xl:flex-row items-stretch xl:items-center justify-between gap-3.5">
-      <!-- Brand Logo + Mobile Quick Actions -->
-      <div class="flex items-center justify-between gap-3">
+    <!-- TOP NAVIGATION BAR (2-ROW CLEAN LAYOUT SO SEARCH BAR IS ALWAYS WIDE & VISIBLE) -->
+    <header class="glass-card rounded-2xl sm:rounded-3xl p-3.5 sm:p-5 mb-4 space-y-3.5">
+      <!-- Top Row: Brand Logo on Left + Controls on Right -->
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <!-- Brand Logo -->
         <div class="flex items-center gap-3 min-w-0">
           <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl shrink-0 flex items-center justify-center shadow-lg text-white" style="background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
@@ -330,37 +331,135 @@
           </div>
         </div>
 
-        <!-- Mobile Unit Toggle -->
-        <button id="unitToggleBtnMobile" onclick="toggleTempUnits()" class="xl:hidden px-2.5 py-1.5 rounded-xl text-xs font-mono font-bold sub-card shrink-0">
-          °C | km/h
-        </button>
+        <!-- Right Controls: Sky FX, Theme, Language, Units, Zen Sound, Voice Briefing -->
+        <div class="flex flex-wrap items-center gap-2">
+          <!-- Interactive Background Sky Animation Selector -->
+          <select id="skyAnimSelect" aria-label="Select Background Animation" title="Choose Background Sky Animation" class="theme-input px-2.5 py-2 rounded-xl text-xs font-semibold focus:outline-none cursor-pointer">
+            <option value="auto">🌌 Sky FX: Auto Weather</option>
+            <option value="aurora">✨ Aurora Silk Waves</option>
+            <option value="rain">🌧️ Soothing Rain & Ripples</option>
+            <option value="snow">❄️ Alpine Snowfall</option>
+            <option value="fireflies">🌠 Starlight & Fireflies</option>
+          </select>
+
+          <!-- Eye-Soothing Palette Selector -->
+          <select id="themeSelect" aria-label="Select Eye-Soothing Color Theme" class="theme-input px-2.5 py-2 rounded-xl text-xs font-semibold focus:outline-none cursor-pointer">
+            <option value="aurora-sage">🌿 Aurora Sage (Dark)</option>
+            <option value="nordic-day">☀️ Nordic Daylight (Light)</option>
+            <option value="lavender-mist">🔮 Lavender Mist</option>
+            <option value="matcha-zen">🍵 Matcha Zen</option>
+            <option value="sunset-silk">🌅 Sunset Silk</option>
+          </select>
+
+          <!-- Multi-Language Selector -->
+          <select id="langSelect" aria-label="Select Language" class="theme-input px-2.5 py-2 rounded-xl text-xs font-semibold focus:outline-none cursor-pointer">
+            <option value="en">🌐 English</option>
+            <option value="hi">🇮🇳 हिन्दी</option>
+            <option value="es">🇪🇸 Español</option>
+            <option value="fr">🇫🇷 Français</option>
+            <option value="de">🇩🇪 Deutsch</option>
+            <option value="ja">🇯🇵 日本語</option>
+            <option value="ar">🇦🇪 العربية</option>
+            <option value="zh">🇨🇳 中文</option>
+          </select>
+
+          <!-- Unit Toggle (°C / °F) -->
+          <button id="unitToggleBtn" onclick="toggleTempUnits()" class="theme-input px-3 py-2 rounded-xl text-xs font-mono font-bold hover:border-teal-400 transition">
+            °C | km/h
+          </button>
+          <button id="unitToggleBtnMobile" onclick="toggleTempUnits()" class="hidden">°C | km/h</button>
+
+          <!-- Ambient Nature Soundscape Button -->
+          <button id="zenAudioBtn" title="Toggle Eye & Ear Soothing Ambient Weather Soundscape" class="theme-input px-2.5 py-2 rounded-xl text-xs font-semibold hover:border-teal-400 transition flex items-center gap-1.5">
+            <span id="zenAudioIcon">🔇</span>
+            <span class="hidden sm:inline" data-i18n="zenSound">Zen Audio</span>
+          </button>
+
+          <!-- AI Voice Weather Briefing -->
+          <button id="voiceBriefingBtn" title="Listen to AI Voice Weather Briefing" class="px-2.5 py-2 rounded-xl text-xs font-bold border border-teal-500/40 bg-teal-500/10 hover:bg-teal-500/20 transition flex items-center gap-1.5 accent-text">
+            <span>🔊</span>
+            <span class="hidden sm:inline" data-i18n="speak">Briefing</span>
+          </button>
+        </div>
       </div>
 
-      <!-- Global Country & City Smart Search Bar -->
-      <div class="relative flex-1 max-w-xl w-full">
-        <div class="relative flex items-center">
-          <svg class="w-5 h-5 absolute left-3.5 pointer-events-none" style="color: var(--accent-primary);" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
-          </svg>
-          <input
-            id="searchInput"
-            type="text"
-            autocomplete="off"
-            placeholder="Type any Country (e.g. Indonesia, Myanmar, India, UK) or City..."
-            class="theme-input w-full pl-11 pr-24 sm:pr-28 py-2.5 sm:py-3 rounded-2xl text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-teal-400/50 transition placeholder:opacity-60"
-          />
-          <div class="absolute right-1.5 flex items-center gap-1">
-            <button id="voiceSearchBtn" title="Voice Search Country or City" class="p-2 rounded-xl hover:opacity-80 transition" style="color: var(--accent-primary);">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 18.75a6 6 0 006-6v-1.5m-6 7.5a6 6 0 01-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 01-3-3V4.5a3 3 0 116 0v8.25a3 3 0 01-3 3z" />
+      <!-- Bottom Row: Full-Width, Prominent Country & City Search Bar (Always Visible & Easy to Type) -->
+      <div class="relative w-full">
+        <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+          <!-- Wide Text Input Box -->
+          <div class="relative flex-1 flex items-center min-w-0">
+            <button
+              type="button"
+              onclick="document.getElementById('searchInput').focus()"
+              title="Click to type a Country or City name"
+              class="absolute left-3.5 flex items-center justify-center"
+              style="color: var(--accent-primary);"
+            >
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
               </svg>
             </button>
-            <button id="locateMeBtn" title="Use My Current GPS Location" class="px-2.5 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1 hover:opacity-90 transition text-slate-950 shadow" style="background: var(--accent-primary);">
-              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+
+            <input
+              id="searchInput"
+              type="text"
+              autocomplete="off"
+              placeholder="✍️ Type any Country name here (e.g. India, Indonesia, UK, Japan, Canada, Brazil) or City..."
+              class="theme-input w-full pl-11 pr-10 py-3 rounded-2xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-teal-400 transition"
+            />
+
+            <!-- Clear Input (✕) Button -->
+            <button
+              id="clearSearchBtn"
+              type="button"
+              onclick="clearSearchInput()"
+              title="Clear search text"
+              class="absolute right-3 p-1 rounded-lg hover:bg-white/10 transition text-xs font-bold opacity-70 hover:opacity-100"
+              style="color: var(--text-muted);"
+            >
+              ✕
+            </button>
+          </div>
+
+          <!-- Action Buttons: Search, Voice Mic, GPS -->
+          <div class="flex items-center gap-2 shrink-0">
+            <button
+              id="searchSubmitBtn"
+              type="button"
+              onclick="triggerManualSearch()"
+              class="px-4 py-3 rounded-2xl text-xs sm:text-sm font-bold text-slate-950 shadow hover:opacity-90 transition flex items-center gap-1.5"
+              style="background: var(--accent-primary);"
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+              </svg>
+              <span>Search</span>
+            </button>
+
+            <button
+              id="voiceSearchBtn"
+              type="button"
+              title="Click and speak any Country or City name"
+              class="theme-input px-3.5 py-3 rounded-2xl text-xs sm:text-sm font-semibold hover:border-teal-400 transition flex items-center gap-1.5"
+              style="color: var(--accent-primary);"
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 18.75a6 6 0 006-6v-1.5m-6 7.5a6 6 0 01-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 01-3-3V4.5a3 3 0 116 0v8.25a3 3 0 01-3 3z" />
+              </svg>
+              <span id="voiceSearchLabel" class="hidden sm:inline">Voice</span>
+            </button>
+
+            <button
+              id="locateMeBtn"
+              type="button"
+              title="Use My Current GPS Location"
+              class="theme-input px-3.5 py-3 rounded-2xl text-xs sm:text-sm font-semibold hover:border-teal-400 transition flex items-center gap-1.5"
+            >
+              <svg class="w-4 h-4 accent-text" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
                 <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
               </svg>
-              <span class="hidden sm:inline" data-i18n="gps">GPS</span>
+              <span data-i18n="gps">GPS</span>
             </button>
           </div>
         </div>
@@ -369,56 +468,6 @@
         <div id="searchDropdown" class="hidden absolute left-0 right-0 mt-2 glass-card rounded-2xl overflow-hidden z-50 max-h-96 overflow-y-auto shadow-2xl">
           <!-- Populated dynamically via JS -->
         </div>
-      </div>
-
-      <!-- Right Controls: Sky FX, Theme, Language, Units, Zen Sound, Voice Briefing -->
-      <div class="flex flex-wrap items-center justify-between sm:justify-end gap-2">
-        <!-- Interactive Background Sky Animation Selector -->
-        <select id="skyAnimSelect" aria-label="Select Background Animation" title="Choose Background Sky Animation" class="theme-input px-2.5 py-2 rounded-xl text-xs font-semibold focus:outline-none cursor-pointer">
-          <option value="auto">🌌 Sky FX: Auto Weather</option>
-          <option value="aurora">✨ Aurora Silk Waves</option>
-          <option value="rain">🌧️ Soothing Rain & Ripples</option>
-          <option value="snow">❄️ Alpine Snowfall</option>
-          <option value="fireflies">🌠 Starlight & Fireflies</option>
-        </select>
-
-        <!-- Eye-Soothing Palette Selector -->
-        <select id="themeSelect" aria-label="Select Eye-Soothing Color Theme" class="theme-input px-2.5 py-2 rounded-xl text-xs font-semibold focus:outline-none cursor-pointer">
-          <option value="aurora-sage">🌿 Aurora Sage (Dark)</option>
-          <option value="nordic-day">☀️ Nordic Daylight (Light)</option>
-          <option value="lavender-mist">🔮 Lavender Mist</option>
-          <option value="matcha-zen">🍵 Matcha Zen</option>
-          <option value="sunset-silk">🌅 Sunset Silk</option>
-        </select>
-
-        <!-- Multi-Language Selector -->
-        <select id="langSelect" aria-label="Select Language" class="theme-input px-2.5 py-2 rounded-xl text-xs font-semibold focus:outline-none cursor-pointer">
-          <option value="en">🌐 English</option>
-          <option value="hi">🇮🇳 हिन्दी</option>
-          <option value="es">🇪🇸 Español</option>
-          <option value="fr">🇫🇷 Français</option>
-          <option value="de">🇩🇪 Deutsch</option>
-          <option value="ja">🇯🇵 日本語</option>
-          <option value="ar">🇦🇪 العربية</option>
-          <option value="zh">🇨🇳 中文</option>
-        </select>
-
-        <!-- Desktop Unit Toggle (°C / °F) -->
-        <button id="unitToggleBtn" onclick="toggleTempUnits()" class="hidden xl:inline-flex theme-input px-3 py-2 rounded-xl text-xs font-mono font-bold hover:border-teal-400 transition">
-          °C | km/h
-        </button>
-
-        <!-- Ambient Nature Soundscape Button -->
-        <button id="zenAudioBtn" title="Toggle Eye & Ear Soothing Ambient Weather Soundscape" class="theme-input px-2.5 py-2 rounded-xl text-xs font-semibold hover:border-teal-400 transition flex items-center gap-1.5">
-          <span id="zenAudioIcon">🔇</span>
-          <span class="hidden 2xl:inline" data-i18n="zenSound">Zen Audio</span>
-        </button>
-
-        <!-- AI Voice Weather Briefing -->
-        <button id="voiceBriefingBtn" title="Listen to AI Voice Weather Briefing" class="px-2.5 py-2 rounded-xl text-xs font-bold border border-teal-500/40 bg-teal-500/10 hover:bg-teal-500/20 transition flex items-center gap-1.5 accent-text">
-          <span>🔊</span>
-          <span class="hidden sm:inline" data-i18n="speak">Briefing</span>
-        </button>
       </div>
     </header>
 
@@ -1537,28 +1586,58 @@
     const searchDropdown = document.getElementById('searchDropdown');
     let searchTimeout = null;
 
+    searchInput.addEventListener('focus', () => {
+      const q = searchInput.value.trim();
+      if (q.length < 2) {
+        renderSearchDropdown(GLOBAL_COUNTRIES_DB.slice(0, 12), []);
+      } else {
+        performSmartSearch(q);
+      }
+    });
+
     searchInput.addEventListener('input', (e) => {
       const q = e.target.value.trim();
       clearTimeout(searchTimeout);
-      if (q.length < 2) {
-        searchDropdown.classList.add('hidden');
+      if (q.length < 1) {
+        renderSearchDropdown(GLOBAL_COUNTRIES_DB.slice(0, 12), []);
         return;
       }
-      searchTimeout = setTimeout(() => performSmartSearch(q), 200);
+      searchTimeout = setTimeout(() => performSmartSearch(q), 180);
     });
 
     searchInput.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') {
-        const q = searchInput.value.trim();
-        if (q.length >= 2) {
-          searchDropdown.classList.add('hidden');
-          resolveDirectCountryOrCityQuery(q);
-        }
+        e.preventDefault();
+        triggerManualSearch();
       }
     });
 
+    window.clearSearchInput = function() {
+      searchInput.value = '';
+      searchInput.focus();
+      renderSearchDropdown(GLOBAL_COUNTRIES_DB.slice(0, 12), []);
+    };
+
+    window.triggerManualSearch = function() {
+      const q = searchInput.value.trim();
+      if (q.length >= 1) {
+        searchDropdown.classList.add('hidden');
+        resolveDirectCountryOrCityQuery(q);
+      } else {
+        searchInput.focus();
+        renderSearchDropdown(GLOBAL_COUNTRIES_DB.slice(0, 12), []);
+      }
+    };
+
     document.addEventListener('click', (e) => {
-      if (!searchInput.contains(e.target) && !searchDropdown.contains(e.target)) {
+      const clearBtn = document.getElementById('clearSearchBtn');
+      const submitBtn = document.getElementById('searchSubmitBtn');
+      if (
+        !searchInput.contains(e.target) &&
+        !searchDropdown.contains(e.target) &&
+        (!clearBtn || !clearBtn.contains(e.target)) &&
+        (!submitBtn || !submitBtn.contains(e.target))
+      ) {
         searchDropdown.classList.add('hidden');
       }
     });
@@ -2544,31 +2623,49 @@
       });
     });
 
-    document.getElementById('voiceSearchBtn').addEventListener('click', () => {
-      const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
-      if (!SpeechRec) {
-        alert('Voice recognition is supported in Chrome/Edge/Safari browsers.');
-        return;
-      }
-      const rec = new SpeechRec();
-      rec.lang = state.lang;
-      rec.start();
-      rec.onresult = (event) => {
-        const transcript = event.results[0][0].transcript;
-        searchInput.value = transcript;
-        resolveDirectCountryOrCityQuery(transcript);
-      };
-    });
-
-    document.getElementById('voiceBriefingBtn').addEventListener('click', () => {
+    function speakCurrentWeatherBriefing() {
       if (!('speechSynthesis' in window) || !state.weather) return;
       window.speechSynthesis.cancel();
       const cur = state.weather.current;
       const info = getWeatherInfo(cur.weather_code, cur.is_day);
-      const text = `BreezeAtlas 2026 live weather briefing for ${state.location.name}, ${state.countryProfile.officialName}. Current sky is ${info.label} with a temperature of ${formatTemp(cur.temperature_2m)} degrees ${state.unit === 'C' ? 'Celsius' : 'Fahrenheit'}. Humidity is ${cur.relative_humidity_2m} percent and wind speed is ${formatSpeed(cur.wind_speed_10m)}. Have a peaceful day.`;
+      const text = `BreezeAtlas live weather for ${state.location.name}, ${state.countryProfile.officialName}. Current sky is ${info.label} with ${formatTemp(cur.temperature_2m)} degrees ${state.unit === 'C' ? 'Celsius' : 'Fahrenheit'}. Humidity is ${cur.relative_humidity_2m} percent and wind speed is ${formatSpeed(cur.wind_speed_10m)}.`;
       const utter = new SpeechSynthesisUtterance(text);
-      utter.rate = 0.96;
+      utter.rate = 0.98;
       window.speechSynthesis.speak(utter);
+    }
+
+    document.getElementById('voiceSearchBtn').addEventListener('click', () => {
+      const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SpeechRec) {
+        alert('Voice recognition is supported in Chrome, Edge, and Safari browsers.');
+        return;
+      }
+      const voiceLabel = document.getElementById('voiceSearchLabel');
+      const rec = new SpeechRec();
+      rec.lang = state.lang;
+      if (voiceLabel) voiceLabel.textContent = 'Listening...';
+      searchInput.placeholder = '🎙️ Listening... Speak a Country or City name now...';
+      rec.start();
+      rec.onresult = async (event) => {
+        const transcript = event.results[0][0].transcript.replace(/[.?!"']/g, '').trim();
+        searchInput.value = transcript;
+        if (voiceLabel) voiceLabel.textContent = 'Voice';
+        searchInput.placeholder = '✍️ Type any Country name here (e.g. India, Indonesia, UK, Japan, Canada, Brazil) or City...';
+        await resolveDirectCountryOrCityQuery(transcript);
+        speakCurrentWeatherBriefing();
+      };
+      rec.onerror = () => {
+        if (voiceLabel) voiceLabel.textContent = 'Voice';
+        searchInput.placeholder = '✍️ Type any Country name here (e.g. India, Indonesia, UK, Japan, Canada, Brazil) or City...';
+      };
+      rec.onend = () => {
+        if (voiceLabel) voiceLabel.textContent = 'Voice';
+        searchInput.placeholder = '✍️ Type any Country name here (e.g. India, Indonesia, UK, Japan, Canada, Brazil) or City...';
+      };
+    });
+
+    document.getElementById('voiceBriefingBtn').addEventListener('click', () => {
+      speakCurrentWeatherBriefing();
     });
 
     document.getElementById('zenAudioBtn').addEventListener('click', () => {
@@ -2841,10 +2938,11 @@
     /*************************************************************************
      * 19. INITIALIZATION ON PAGE LOAD
      *************************************************************************/
-    window.addEventListener('DOMContentLoaded', () => {
+    window.addEventListener('DOMContentLoaded', async () => {
       renderQuickCountryPills();
       updateLiveClocks();
-      selectQuickCountry('India');
+      await selectQuickCountry('India');
+      searchInput.value = '';
     });
   </script>
 </body>
