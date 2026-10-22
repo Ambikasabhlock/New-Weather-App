@@ -324,10 +324,9 @@
           </div>
           <div class="min-w-0">
             <div class="flex items-center gap-2">
-              <h1 class="text-lg sm:text-xl font-extrabold tracking-tight truncate">Breeze<span class="accent-gradient-text">Atlas</span></h1>
+              <h1 class="text-lg sm:text-2xl font-extrabold tracking-tight truncate">Breeze<span class="accent-gradient-text">Atlas</span></h1>
               <span class="text-[10px] font-mono uppercase tracking-widest px-2 py-0.5 rounded-full border border-teal-500/30 bg-teal-500/10 accent-text font-bold shrink-0">2026 Live</span>
             </div>
-            <p class="text-[11px] sm:text-xs truncate" style="color: var(--text-muted);" data-i18n="tagline">Biophilic Global Country, Clock & Weather Atlas</p>
           </div>
         </div>
 
@@ -545,7 +544,8 @@
                 </div>
                 <div class="p-2.5 rounded-xl sub-card">
                   <p class="text-[10px] uppercase tracking-wider font-semibold" style="color: var(--text-muted);" data-i18n="currency">Currency</p>
-                  <p id="countryCurrency" class="font-bold truncate mt-0.5">INR (₹)</p>
+                  <p id="countryCurrency" class="font-bold truncate mt-0.5 accent-text">INR (₹)</p>
+                  <p id="countryCurrencyLiveRate" class="text-[10px] font-mono truncate mt-0.5" style="color: var(--text-muted);">$1 = 94.59 INR</p>
                 </div>
                 <div class="p-2.5 rounded-xl sub-card">
                   <p class="text-[10px] uppercase tracking-wider font-semibold" style="color: var(--text-muted);" data-i18n="population">Population</p>
@@ -554,6 +554,45 @@
                 <div class="p-2.5 rounded-xl sub-card">
                   <p class="text-[10px] uppercase tracking-wider font-semibold" style="color: var(--text-muted);" data-i18n="languages">Language</p>
                   <p id="countryLanguage" class="font-bold truncate mt-0.5">Hindi, English</p>
+                </div>
+              </div>
+
+              <!-- Interactive Live Currency Converter Box -->
+              <div class="p-2.5 rounded-xl sub-card space-y-1.5">
+                <div class="flex items-center justify-between text-[10px] font-bold uppercase tracking-wider">
+                  <span class="accent-text">💱 Live Currency Converter</span>
+                  <span id="converterRateLabel" class="font-mono" style="color: var(--text-muted);">Live Market Rate</span>
+                </div>
+                <div class="flex items-center gap-1.5">
+                  <input
+                    id="currencyAmountInput"
+                    type="number"
+                    value="100"
+                    min="0"
+                    step="any"
+                    oninput="updateLiveCurrencyConversion()"
+                    class="theme-input w-20 px-2 py-1 rounded-lg text-xs font-mono font-bold focus:outline-none focus:ring-1 focus:ring-teal-400"
+                  />
+                  <select
+                    id="currencyBaseSelect"
+                    onchange="updateLiveCurrencyConversion()"
+                    aria-label="Base Currency"
+                    class="theme-input px-2 py-1 rounded-lg text-xs font-mono font-bold focus:outline-none cursor-pointer"
+                  >
+                    <option value="USD">USD ($)</option>
+                    <option value="GBP">GBP (£)</option>
+                    <option value="EUR">EUR (€)</option>
+                    <option value="INR">INR (₹)</option>
+                    <option value="AED">AED</option>
+                    <option value="AUD">AUD ($)</option>
+                    <option value="CAD">CAD ($)</option>
+                    <option value="SGD">SGD ($)</option>
+                    <option value="JPY">JPY (¥)</option>
+                  </select>
+                  <span class="text-xs font-bold">=</span>
+                  <div id="currencyConvertedOutput" class="flex-1 text-right font-mono font-extrabold text-xs sm:text-sm accent-text truncate">
+                    9,459.39 INR
+                  </div>
                 </div>
               </div>
 
@@ -921,7 +960,7 @@
         <span>BreezeAtlas 2026 • Powered by Free Open-Meteo Forecast, Air Quality & 200+ Country Intelligence</span>
       </div>
       <div>
-        <span>Interactive Living Sky Canvas • Eye-Soothing Biophilic Design</span>
+        <span>Interactive Living Sky Canvas • Live Global Currency & World Clock</span>
       </div>
     </footer>
 
@@ -1808,19 +1847,163 @@
         }
       } catch (e) {}
 
+      // Lookup exact Currency & Language from comprehensive ISO2 map
+      const isoMeta = ISO2_CURRENCY_AND_LANG_MAP[code2] || { cur: 'USD ($)', code: 'USD', lang: `${officialCountryName} Official` };
+
       state.countryProfile = {
         flagUrl: getFlagUrl(code2),
         officialName: officialCountryName,
         capital: capitalName,
-        currency: `${code2} Currency`,
+        currency: isoMeta.cur,
+        currencyCode: isoMeta.code,
         population: popFormatted,
-        language: `${officialCountryName} Official`,
+        language: isoMeta.lang,
         region: data.timezone ? data.timezone.split('/')[0] : 'Global Region',
         code: code2,
         code2: code2,
         cities: discoveredCities
       };
     }
+
+    // Comprehensive ISO-2 Country -> Currency + Symbol + Language Dictionary
+    const ISO2_CURRENCY_AND_LANG_MAP = {
+      IN: { cur: "INR (₹)", code: "INR", lang: "Hindi, English" },
+      ID: { cur: "IDR (Rp)", code: "IDR", lang: "Indonesian" },
+      MM: { cur: "MMK (K)", code: "MMK", lang: "Burmese" },
+      GB: { cur: "GBP (£)", code: "GBP", lang: "English" },
+      US: { cur: "USD ($)", code: "USD", lang: "English" },
+      JP: { cur: "JPY (¥)", code: "JPY", lang: "Japanese" },
+      KR: { cur: "KRW (₩)", code: "KRW", lang: "Korean" },
+      CH: { cur: "CHF (Fr)", code: "CHF", lang: "German, French" },
+      AE: { cur: "AED (د.إ)", code: "AED", lang: "Arabic" },
+      AU: { cur: "AUD ($)", code: "AUD", lang: "English" },
+      CA: { cur: "CAD ($)", code: "CAD", lang: "English, French" },
+      BR: { cur: "BRL (R$)", code: "BRL", lang: "Portuguese" },
+      FR: { cur: "EUR (€)", code: "EUR", lang: "French" },
+      DE: { cur: "EUR (€)", code: "EUR", lang: "German" },
+      SG: { cur: "SGD ($)", code: "SGD", lang: "English, Malay" },
+      TH: { cur: "THB (฿)", code: "THB", lang: "Thai" },
+      MY: { cur: "MYR (RM)", code: "MYR", lang: "Malay" },
+      VN: { cur: "VND (₫)", code: "VND", lang: "Vietnamese" },
+      PH: { cur: "PHP (₱)", code: "PHP", lang: "Filipino, English" },
+      CN: { cur: "CNY (¥)", code: "CNY", lang: "Mandarin" },
+      ES: { cur: "EUR (€)", code: "EUR", lang: "Spanish" },
+      IT: { cur: "EUR (€)", code: "EUR", lang: "Italian" },
+      NL: { cur: "EUR (€)", code: "EUR", lang: "Dutch" },
+      TR: { cur: "TRY (₺)", code: "TRY", lang: "Turkish" },
+      SA: { cur: "SAR (﷼)", code: "SAR", lang: "Arabic" },
+      ZA: { cur: "ZAR (R)", code: "ZAR", lang: "English, Zulu" },
+      EG: { cur: "EGP (£)", code: "EGP", lang: "Arabic" },
+      NZ: { cur: "NZD ($)", code: "NZD", lang: "English, Māori" },
+      MX: { cur: "MXN ($)", code: "MXN", lang: "Spanish" },
+      AR: { cur: "ARS ($)", code: "ARS", lang: "Spanish" },
+      PK: { cur: "PKR (₨)", code: "PKR", lang: "Urdu, English" },
+      BD: { cur: "BDT (৳)", code: "BDT", lang: "Bengali" },
+      LK: { cur: "LKR (Rs)", code: "LKR", lang: "Sinhala, Tamil" },
+      NP: { cur: "NPR (रू)", code: "NPR", lang: "Nepali" },
+      NO: { cur: "NOK (kr)", code: "NOK", lang: "Norwegian" },
+      SE: { cur: "SEK (kr)", code: "SEK", lang: "Swedish" },
+      RU: { cur: "RUB (₽)", code: "RUB", lang: "Russian" },
+      IE: { cur: "EUR (€)", code: "EUR", lang: "English, Irish" },
+      PT: { cur: "EUR (€)", code: "EUR", lang: "Portuguese" },
+      BE: { cur: "EUR (€)", code: "EUR", lang: "Dutch, French" },
+      AT: { cur: "EUR (€)", code: "EUR", lang: "German" },
+      FI: { cur: "EUR (€)", code: "EUR", lang: "Finnish" },
+      GR: { cur: "EUR (€)", code: "EUR", lang: "Greek" },
+      PL: { cur: "PLN (zł)", code: "PLN", lang: "Polish" },
+      DK: { cur: "DKK (kr)", code: "DKK", lang: "Danish" },
+      CZ: { cur: "CZK (Kč)", code: "CZK", lang: "Czech" },
+      HU: { cur: "HUF (Ft)", code: "HUF", lang: "Hungarian" },
+      RO: { cur: "RON (lei)", code: "RON", lang: "Romanian" },
+      UA: { cur: "UAH (₴)", code: "UAH", lang: "Ukrainian" },
+      QA: { cur: "QAR (﷼)", code: "QAR", lang: "Arabic" },
+      KW: { cur: "KWD (د.ك)", code: "KWD", lang: "Arabic" },
+      OM: { cur: "OMR (﷼)", code: "OMR", lang: "Arabic" },
+      BH: { cur: "BHD (.د.ب)", code: "BHD", lang: "Arabic" },
+      IL: { cur: "ILS (₪)", code: "ILS", lang: "Hebrew" },
+      JO: { cur: "JOD (د.ا)", code: "JOD", lang: "Arabic" },
+      NG: { cur: "NGN (₦)", code: "NGN", lang: "English" },
+      KE: { cur: "KES (KSh)", code: "KES", lang: "Swahili, English" },
+      MA: { cur: "MAD (د.م.)", code: "MAD", lang: "Arabic, Berber" },
+      CL: { cur: "CLP ($)", code: "CLP", lang: "Spanish" },
+      CO: { cur: "COP ($)", code: "COP", lang: "Spanish" },
+      PE: { cur: "PEN (S/)", code: "PEN", lang: "Spanish" },
+      MV: { cur: "MVR (Rf)", code: "MVR", lang: "Dhivehi" },
+      BT: { cur: "BTN (Nu.)", code: "BTN", lang: "Dzongkha" },
+      KH: { cur: "KHR (៛)", code: "KHR", lang: "Khmer" },
+      LA: { cur: "LAK (₭)", code: "LAK", lang: "Lao" },
+      KZ: { cur: "KZT (₸)", code: "KZT", lang: "Kazakh, Russian" },
+      UZ: { cur: "UZS (so'm)", code: "UZS", lang: "Uzbek" },
+      IS: { cur: "ISK (kr)", code: "ISK", lang: "Icelandic" }
+    };
+
+    // Live Exchange Rates (Base USD) with built-in fallback
+    let liveExchangeRates = {
+      USD: 1, EUR: 0.92, GBP: 0.75, INR: 94.59, IDR: 18030, MMK: 2100, JPY: 158.1,
+      KRW: 1385, CHF: 0.88, AED: 3.6725, AUD: 1.52, CAD: 1.39, BRL: 5.75, SGD: 1.34,
+      THB: 33.8, MYR: 4.38, VND: 25400, PHP: 58.2, CNY: 7.18, TRY: 34.5, SAR: 3.75,
+      ZAR: 17.8, EGP: 49.2, NZD: 1.68, MXN: 20.1, ARS: 995, PKR: 278, BDT: 119.5,
+      LKR: 293, NPR: 151.3, NOK: 11.0, SEK: 10.7, RUB: 97.5, PLN: 4.02, DKK: 6.88,
+      CZK: 23.4, HUF: 375, RON: 4.58, UAH: 41.3, QAR: 3.64, KWD: 0.307, OMR: 0.385,
+      BHD: 0.376, ILS: 3.72, JOD: 0.709, NGN: 1650, KES: 129, MAD: 9.9, CLP: 965,
+      COP: 4380, PEN: 3.77, MVR: 15.4, BTN: 94.59, KHR: 4065, LAK: 21900, KZT: 492,
+      UZS: 12850, ISK: 138
+    };
+
+    async function fetchLiveExchangeRates() {
+      try {
+        const res = await fetch('https://open.er-api.com/v6/latest/USD');
+        const data = await res.json();
+        if (data && data.rates) {
+          liveExchangeRates = { ...liveExchangeRates, ...data.rates };
+          updateLiveCurrencyConversion();
+        }
+      } catch (e) {
+        console.warn('Using built-in currency exchange rates fallback');
+      }
+    }
+
+    function extractCurrencyCode(currencyLabel, code2) {
+      if (ISO2_CURRENCY_AND_LANG_MAP[code2]?.code) {
+        return ISO2_CURRENCY_AND_LANG_MAP[code2].code;
+      }
+      const match = (currencyLabel || '').match(/^([A-Z]{3})\b/);
+      return match ? match[1] : 'USD';
+    }
+
+    window.updateLiveCurrencyConversion = function() {
+      const targetCode = extractCurrencyCode(state.countryProfile.currency, state.countryProfile.code2);
+      const baseSelect = document.getElementById('currencyBaseSelect');
+      const amountInput = document.getElementById('currencyAmountInput');
+      const outputEl = document.getElementById('currencyConvertedOutput');
+      const rateBadgeEl = document.getElementById('countryCurrencyLiveRate');
+      const converterRateEl = document.getElementById('converterRateLabel');
+
+      // If target currency is USD, default base converter to GBP or EUR so conversion is meaningful
+      if (baseSelect && baseSelect.value === targetCode && !baseSelect.dataset.userChanged) {
+        baseSelect.value = targetCode === 'USD' ? 'GBP' : 'USD';
+      }
+
+      const baseCode = baseSelect ? baseSelect.value : 'USD';
+      const amount = parseFloat(amountInput?.value || '100') || 0;
+
+      const usdToTarget = liveExchangeRates[targetCode] || 1;
+      const usdToBase = liveExchangeRates[baseCode] || 1;
+      const baseToTargetRate = usdToTarget / usdToBase;
+      const convertedVal = amount * baseToTargetRate;
+
+      const formatRate = (val) => val >= 100 ? val.toLocaleString(undefined, { maximumFractionDigits: 1 }) : val.toLocaleString(undefined, { maximumFractionDigits: 2 });
+
+      if (rateBadgeEl) {
+        rateBadgeEl.textContent = `$1 USD = ${formatRate(usdToTarget)} ${targetCode}`;
+      }
+      if (converterRateEl) {
+        converterRateEl.textContent = `1 ${baseCode} = ${formatRate(baseToTargetRate)} ${targetCode}`;
+      }
+      if (outputEl) {
+        outputEl.textContent = `${formatRate(convertedVal)} ${targetCode}`;
+      }
+    };
 
     async function resolveDirectCountryOrCityQuery(query) {
       const qLower = query.toLowerCase();
@@ -1979,6 +2162,7 @@
       document.getElementById('countryCurrency').textContent = state.countryProfile.currency;
       document.getElementById('countryPopulation').textContent = state.countryProfile.population;
       document.getElementById('countryLanguage').textContent = state.countryProfile.language;
+      updateLiveCurrencyConversion();
 
       const citiesContainer = document.getElementById('countryCitiesContainer');
       if (state.countryProfile.cities && state.countryProfile.cities.length > 0) {
@@ -2939,6 +3123,14 @@
      * 19. INITIALIZATION ON PAGE LOAD
      *************************************************************************/
     window.addEventListener('DOMContentLoaded', async () => {
+      const baseSel = document.getElementById('currencyBaseSelect');
+      if (baseSel) {
+        baseSel.addEventListener('change', () => {
+          baseSel.dataset.userChanged = '1';
+          window.updateLiveCurrencyConversion();
+        });
+      }
+      fetchLiveExchangeRates();
       renderQuickCountryPills();
       updateLiveClocks();
       await selectQuickCountry('India');
